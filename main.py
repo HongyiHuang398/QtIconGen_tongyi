@@ -3,9 +3,9 @@ import sys
 from configparser import ConfigParser
 from threading import Thread
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QTranslator
 
 import MainWindow
-import os
 from pathlib import Path
 from PIL import Image
 from io import BytesIO
@@ -15,13 +15,34 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.trans = None
         self.init_config()
         self.load_config()
 
-        self.lineEdit.editingFinished.connect(self.handle_editing_finished)
-        self.pushButton.clicked.connect(self.send_request)
-        self.pushButton_2.clicked.connect(self.open_color_selector)
+        self.api_key_lineEdit.editingFinished.connect(self.handle_editing_finished)
+        self.generate_image_pushButton.clicked.connect(self.send_request)
+        self.icon_color_select_pushButton.clicked.connect(self.open_color_selector)
         self.imagePreviewList.itemDoubleClicked.connect(self.open_image_selected)
+
+        self.en_US_radio_Button.clicked.connect(self.select_en_us)
+        self.zh_CN_radio_Button.clicked.connect(self.select_zh_cn)
+
+    def select_en_us(self):
+        if self.trans:
+            QtWidgets.QApplication.removeTranslator(self.trans)
+            self.trans = None
+        self.retranslateUi(self)
+        self.handle_editing_finished()
+
+    def select_zh_cn(self):
+        if self.trans:
+            QtWidgets.QApplication.removeTranslator(self.trans)
+            self.trans = None
+        self.trans = QTranslator()
+        if self.trans.load('zh_CN'):
+            QtWidgets.QApplication.installTranslator(self.trans)
+        self.retranslateUi(self)
+        self.handle_editing_finished()
 
     def open_image_selected(self):
         subprocess.run(['start',
@@ -30,12 +51,13 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
     def open_color_selector(self):
         color = QtWidgets.QColorDialog().getColor()
-        self.label_4.setText(color.name())
+        self.icon_color_select.setText(color.name())
 
     def handle_editing_finished(self):
         config = ConfigParser()
         config.read("config.ini", encoding='UTF-8')
-        config['client']['api_key'] = self.lineEdit.text()
+        config['client']['api_key'] = self.api_key_lineEdit.text()
+        config['client']['language'] = 'en_US' if self.en_US_radio_Button.isChecked() else 'zh_CN'
         fo = open("config.ini", 'w', encoding='UTF-8')
         config.write(fo)
         fo.close()
@@ -44,7 +66,12 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
     def load_config(self):
         config = ConfigParser()
         config.read('config.ini', encoding='UTF-8')
-        self.lineEdit.setText(config['client']['api_key'])
+        self.api_key_lineEdit.setText(config['client']['api_key'])
+        if config['client']['language'] == 'en_US':
+            self.select_en_us()
+        else:
+            self.select_zh_cn()
+            self.zh_CN_radio_Button.setChecked(True)
 
     def init_config(self):
         config = ConfigParser()
@@ -54,17 +81,13 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         client = config['client']
         if 'api_key' not in client:
             client['api_key'] = ""
+        if 'language' not in client:
+            client['language'] = "en_US"
         fo = open("config.ini", 'w', encoding='UTF-8')
         config.write(fo)
         fo.close()
 
     def send_request(self):
-        from http import HTTPStatus
-        from urllib.parse import urlparse, unquote
-        from pathlib import PurePosixPath
-        import requests
-        from dashscope import ImageSynthesis
-        import os
 
         prompt = f"flat ios app icon for {self.lineEdit_2.text()} with {self.label_4.text()} color,"
         prompt_map = {
@@ -99,19 +122,19 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         print(prompt)
         print('----已发送请求, 请等待----')
         try:
-            thread = Thread(target=self.request_image,args=(prompt,))
+            thread = Thread(target=self.request_image, args=(prompt,))
             thread.start()
         except:
             print("错误，请输入正确的Api key!")
 
-    def request_image(self,prompt):
+    def request_image(self, prompt):
         from http import HTTPStatus
         from urllib.parse import urlparse, unquote
         from pathlib import PurePosixPath
         import requests
         from dashscope import ImageSynthesis
         import os
-        rsp = ImageSynthesis.call(api_key=self.lineEdit.text(),
+        rsp = ImageSynthesis.call(api_key=self.api_key.text(),
                                   model=self.comboBox.currentText(),
                                   prompt=prompt,
                                   n=int(self.image_amount.text()),

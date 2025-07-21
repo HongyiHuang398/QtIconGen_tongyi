@@ -23,38 +23,38 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>AI icon生成器</string>
+   <string>AI Icon Generator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>490</x>
       <y>20</y>
-      <width>261</width>
+      <width>291</width>
       <height>114</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="api_key">
        <property name="text">
         <string>api_key</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="api_key_lineEdit"/>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="model_select">
        <property name="text">
-        <string>模型选择</string>
+        <string>Model select</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QComboBox" name="comboBox">
+      <widget class="QComboBox" name="model_select_comboBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -82,14 +82,14 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_8">
+      <widget class="QLabel" name="output_format">
        <property name="text">
-        <string>输出格式</string>
+        <string>Output format</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QComboBox" name="image_format">
+      <widget class="QComboBox" name="output_format_comboBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -115,7 +115,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="generate_image_pushButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -128,17 +128,11 @@
          <height>16777215</height>
         </size>
        </property>
-       <property name="font">
-        <font>
-         <family>Agency FB</family>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
        <property name="contextMenuPolicy">
         <enum>Qt::DefaultContextMenu</enum>
        </property>
        <property name="text">
-        <string>生成图片</string>
+        <string>Generate images</string>
        </property>
       </widget>
      </item>
@@ -149,47 +143,47 @@
      <rect>
       <x>20</x>
       <y>20</y>
-      <width>269</width>
+      <width>281</width>
       <height>142</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout_2">
      <item row="0" column="0">
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="icon_name">
        <property name="text">
-        <string>生成什么的图标</string>
+        <string>Subject</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="icon_name_lineEdit"/>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="icon_color_select">
        <property name="text">
         <string>#1e90ff</string>
        </property>
       </widget>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="label_5">
+      <widget class="QLabel" name="extra_prompts">
        <property name="text">
-        <string>额外提示词</string>
+        <string>Extra prompts</string>
        </property>
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="extra_prompts_lineEdit"/>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="image_amount">
+      <widget class="QLineEdit" name="icon_amount_lineEdit">
        <property name="text">
         <string>1</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QComboBox" name="icon_size">
+      <widget class="QComboBox" name="icon_size_comboBox">
        <item>
         <property name="text">
          <string>768*768</string>
@@ -208,23 +202,23 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_6">
+      <widget class="QLabel" name="icon_amount">
        <property name="text">
-        <string>数量</string>
+        <string>Amount</string>
        </property>
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="icon_size">
        <property name="text">
-        <string>尺寸</string>
+        <string>Size</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="icon_color_select_pushButton">
        <property name="text">
-        <string>打开颜色选择器</string>
+        <string>Open color selector</string>
        </property>
       </widget>
      </item>
@@ -254,86 +248,86 @@
     <widget class="QWidget" name="scrollAreaWidgetContents">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>-83</x>
        <y>0</y>
-       <width>781</width>
-       <height>191</height>
+       <width>843</width>
+       <height>184</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
-       <widget class="QGroupBox" name="groupBox">
+       <widget class="QGroupBox" name="visual_style_groupBox">
         <property name="title">
-         <string>视觉风格</string>
+         <string>Visual style</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="4" column="1">
           <widget class="QCheckBox" name="checkBox_24">
            <property name="text">
-            <string>低多边形</string>
+            <string>Low Poly</string>
            </property>
           </widget>
          </item>
          <item row="4" column="0">
           <widget class="QCheckBox" name="checkBox_23">
            <property name="text">
-            <string>像素</string>
+            <string>Pixel</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
           <widget class="QCheckBox" name="checkBox_2">
            <property name="text">
-            <string>扁平化</string>
+            <string>Flat</string>
            </property>
           </widget>
          </item>
          <item row="2" column="1">
           <widget class="QCheckBox" name="checkBox_6">
            <property name="text">
-            <string>线面结合</string>
+            <string>Blender</string>
            </property>
           </widget>
          </item>
          <item row="0" column="0">
           <widget class="QCheckBox" name="checkBox_7">
            <property name="text">
-            <string>3D渲染</string>
+            <string>3D</string>
            </property>
           </widget>
          </item>
          <item row="3" column="1">
           <widget class="QCheckBox" name="checkBox_22">
            <property name="text">
-            <string>抽象</string>
+            <string>Abstract</string>
            </property>
           </widget>
          </item>
          <item row="3" column="0">
           <widget class="QCheckBox" name="checkBox_20">
            <property name="text">
-            <string>现代</string>
+            <string>Modern</string>
            </property>
           </widget>
          </item>
          <item row="2" column="0">
           <widget class="QCheckBox" name="checkBox_5">
            <property name="text">
-            <string>霓虹</string>
+            <string>Neon</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QCheckBox" name="checkBox_8">
            <property name="text">
-            <string>简约设计</string>
+            <string>2.5D</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
           <widget class="QCheckBox" name="checkBox">
            <property name="text">
-            <string>可爱</string>
+            <string>Cute</string>
            </property>
           </widget>
          </item>
@@ -341,50 +335,56 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QGroupBox" name="groupBox_2">
+       <widget class="QGroupBox" name="hue_groupBox">
+        <property name="maximumSize">
+         <size>
+          <width>250</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="title">
-         <string>色彩</string>
+         <string>Hue</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="checkBox_9">
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="checkBox_4">
            <property name="text">
-            <string>柔和色彩</string>
+            <string>Gradient</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QCheckBox" name="checkBox_10">
+           <property name="text">
+            <string>Transparent</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QCheckBox" name="checkBox_3">
+           <property name="text">
+            <string>Morandi</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
+          <widget class="QCheckBox" name="checkBox_9">
+           <property name="text">
+            <string>Soft</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
           <widget class="QCheckBox" name="checkBox_11">
            <property name="text">
-            <string>荧光色</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QCheckBox" name="checkBox_12">
-           <property name="text">
-            <string>互补色</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QCheckBox" name="checkBox_4">
-           <property name="text">
-            <string>渐变</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QCheckBox" name="checkBox_10">
-           <property name="text">
-            <string>透明</string>
+            <string>Fluorescent</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QCheckBox" name="checkBox_3">
+          <widget class="QCheckBox" name="checkBox_12">
            <property name="text">
-            <string>莫兰迪</string>
+            <string>Complementary</string>
            </property>
           </widget>
          </item>
@@ -392,78 +392,78 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QGroupBox" name="groupBox_3">
+       <widget class="QGroupBox" name="texture_groupBox">
         <property name="title">
-         <string>材质质感</string>
+         <string>Texture</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
-         <item row="1" column="0">
-          <widget class="QCheckBox" name="checkBox_16">
-           <property name="text">
-            <string>柔软</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QCheckBox" name="checkBox_18">
-           <property name="text">
-            <string>亚克力</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QCheckBox" name="checkBox_15">
-           <property name="text">
-            <string>彩色玻璃</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="QCheckBox" name="checkBox_17">
            <property name="text">
-            <string>磨砂玻璃</string>
+            <string>Frosted Glass</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QCheckBox" name="checkBox_18">
+           <property name="text">
+            <string>Acrylic</string>
            </property>
           </widget>
          </item>
          <item row="0" column="0">
           <widget class="QCheckBox" name="checkBox_14">
            <property name="text">
-            <string>液态金属</string>
+            <string>Liquid Metal</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QCheckBox" name="checkBox_26">
+           <property name="text">
+            <string>Aluminum</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QCheckBox" name="checkBox_21">
+           <property name="text">
+            <string>Clay</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QCheckBox" name="checkBox_13">
            <property name="text">
-            <string>金属</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QCheckBox" name="checkBox_21">
-           <property name="text">
-            <string>粘土</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QCheckBox" name="checkBox_19">
-           <property name="text">
-            <string>玻璃</string>
+            <string>Metal</string>
            </property>
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QCheckBox" name="checkBox_25">
+          <widget class="QCheckBox" name="checkBox_19">
            <property name="text">
-            <string>衍纸艺术</string>
+            <string>Glass</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QCheckBox" name="checkBox_26">
+         <item row="5" column="0">
+          <widget class="QCheckBox" name="checkBox_25">
            <property name="text">
-            <string>铝制</string>
+            <string>Paper Art</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="checkBox_16">
+           <property name="text">
+            <string>Soft</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="checkBox_15">
+           <property name="text">
+            <string>Stained Glass</string>
            </property>
           </widget>
          </item>
@@ -471,7 +471,7 @@
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QGroupBox" name="groupBox_4">
+       <widget class="QGroupBox" name="shape_groupBox">
         <property name="maximumSize">
          <size>
           <width>100</width>
@@ -479,13 +479,13 @@
          </size>
         </property>
         <property name="title">
-         <string>边框形状</string>
+         <string>Shape</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_5">
          <item row="1" column="1">
           <widget class="QRadioButton" name="radioButton_2">
            <property name="text">
-            <string>圆形</string>
+            <string>Circle</string>
            </property>
            <property name="checked">
             <bool>false</bool>
@@ -495,14 +495,14 @@
          <item row="2" column="1">
           <widget class="QRadioButton" name="radioButton">
            <property name="text">
-            <string>方形</string>
+            <string>Square</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QRadioButton" name="radioButton_3">
            <property name="text">
-            <string>圆角</string>
+            <string>Rounded</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -542,6 +542,38 @@
     <property name="resizeMode">
      <enum>QListView::Adjust</enum>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="language_select_groupBox">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>20</y>
+      <width>151</width>
+      <height>58</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Language Select</string>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QRadioButton" name="en_US_radio_Button">
+       <property name="text">
+        <string>en</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="zh_CN_radio_Button">
+       <property name="text">
+        <string>zh</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
