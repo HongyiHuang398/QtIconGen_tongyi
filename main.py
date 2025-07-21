@@ -15,6 +15,8 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.setup_component_properties()
+
         self.trans = None
         self.init_config()
         self.load_config()
@@ -26,6 +28,23 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
         self.en_US_radio_Button.clicked.connect(self.select_en_us)
         self.zh_CN_radio_Button.clicked.connect(self.select_zh_cn)
+
+    def setup_component_properties(self):
+        containers = [
+            (self.visual_style_groupBox, "visual"),
+            (self.hue_groupBox, "hue"),
+            (self.texture_groupBox, "texture"),
+            (self.shape_groupBox, "shape")
+        ]
+
+        for container, prefix in containers:
+            children = container.findChildren((QtWidgets.QCheckBox, QtWidgets.QRadioButton))
+
+            for child in children:
+
+                prompt_key = child.text()
+
+                child.setProperty("prompt_key", prompt_key)
 
     def select_en_us(self):
         if self.trans:
@@ -88,44 +107,49 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         fo.close()
 
     def send_request(self):
+        prompt_parts = []
 
-        prompt = f"flat ios app icon for {self.lineEdit_2.text()} with {self.label_4.text()} color,"
-        prompt_map = {
-            "视觉风格": (" the visual style should be", QtWidgets.QCheckBox),
-            "材质质感": (" the texture should be", QtWidgets.QCheckBox),
-            "色彩": (" the color style should be", QtWidgets.QCheckBox),
-            "边框形状": (" the border shape should be", QtWidgets.QRadioButton)
+        prompt_parts.append(
+            f"flat ios app icon for {self.icon_name_lineEdit.text()} with {self.icon_color_select.text()} color")
+
+        containers = [
+            self.visual_style_groupBox,
+            self.hue_groupBox,
+            self.texture_groupBox,
+            self.shape_groupBox
+        ]
+
+        category_names = {
+            self.visual_style_groupBox: "visual style",
+            self.hue_groupBox: "color",
+            self.texture_groupBox: "texture",
+            self.shape_groupBox: "shape"
         }
 
-        prompt_lines = []
+        for container in containers:
+            selected = []
+            for child in container.findChildren((QtWidgets.QCheckBox, QtWidgets.QRadioButton)):
+                if (isinstance(child, QtWidgets.QCheckBox) and child.isChecked()) or \
+                        (isinstance(child, QtWidgets.QRadioButton) and child.isChecked()):
+                    prompt_key = child.property("prompt_key")
+                    if prompt_key:
+                        selected.append(prompt_key)
+            if len(selected) > 0:
+                category = category_names.get(container, "feature")
+                prompt_parts.append(f"{category}: {', '.join(selected)}")
 
-        for groupbox in self.scrollArea.widget().children():
-            if not isinstance(groupbox, QtWidgets.QGroupBox):
-                continue
+        extra = self.extra_prompts_lineEdit.text().strip()
+        if extra:
+            prompt_parts.append(extra)
 
-            title = groupbox.title()
-            if title in prompt_map:
-                prefix, widget_type = prompt_map[title]
-                selected = [
-                    box.text()
-                    for box in groupbox.findChildren(widget_type)
-                    if box.isChecked()
-                ]
-
-                if selected:
-                    options = ", ".join(selected)
-                    prompt_lines.append(f"{prefix} {options}")
-
-        prompt += ";".join(prompt_lines)
-        prompt += self.lineEdit_3.text()
-
-        print(prompt)
-        print('----已发送请求, 请等待----')
+        prompt = ', '.join(prompt_parts)
+        print("Original Prompt:", prompt)
+        print('----Send request, please wait...----')
         try:
             thread = Thread(target=self.request_image, args=(prompt,))
             thread.start()
         except:
-            print("错误，请输入正确的Api key!")
+            print("Error, please enter the correct api key!")
 
     def request_image(self, prompt):
         from http import HTTPStatus
@@ -133,21 +157,20 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         from pathlib import PurePosixPath
         import requests
         from dashscope import ImageSynthesis
-        import os
-        rsp = ImageSynthesis.call(api_key=self.api_key.text(),
-                                  model=self.comboBox.currentText(),
+        rsp = ImageSynthesis.call(api_key=self.api_key_lineEdit.text(),
+                                  model=self.model_select_comboBox.currentText(),
                                   prompt=prompt,
-                                  n=int(self.image_amount.text()),
-                                  size=self.icon_size.currentText())
+                                  n=int(self.icon_amount_lineEdit.text()),
+                                  size=self.icon_size_comboBox.currentText())
         print('response: %s' % rsp)
         if rsp.status_code == HTTPStatus.OK:
             output_dir = Path("outputs")
             output_dir.mkdir(exist_ok=True)
             counter = 1
             for result in rsp.output.results:
-                print(f"\r当前进度[{counter}/{len(rsp.output.results)}]")
+                print(f"\rProcess[{counter}/{len(rsp.output.results)}]",end="")
                 file_name = Path(PurePosixPath(unquote(urlparse(result.url).path)).parts[-1]).stem
-                file_name += self.image_format.currentText()
+                file_name += self.output_format_comboBox.currentText()
                 with Image.open(BytesIO(requests.get(result.url).content)) as img:
                     img = img.convert("RGB")
                     img.save(output_dir / file_name, quality=100)
