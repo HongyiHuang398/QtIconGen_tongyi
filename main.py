@@ -10,6 +10,19 @@ from pathlib import Path
 from PIL import Image
 from io import BytesIO
 
+# Get path of the resource
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(BASE_DIR)
+sys.path.append(os.path.join(BASE_DIR, 'client'))
+
+
+def resourcePath(relative_path):
+    base_path = os.path.abspath(".")
+    r = os.path.join(base_path, relative_path)
+    return r
+
 
 class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
     def __init__(self):
@@ -41,7 +54,6 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             children = container.findChildren((QtWidgets.QCheckBox, QtWidgets.QRadioButton))
 
             for child in children:
-
                 prompt_key = child.text()
 
                 child.setProperty("prompt_key", prompt_key)
@@ -58,7 +70,7 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             QtWidgets.QApplication.removeTranslator(self.trans)
             self.trans = None
         self.trans = QTranslator()
-        if self.trans.load('zh_CN'):
+        if self.trans.load(resourcePath("./zh_CN.qm")):
             QtWidgets.QApplication.installTranslator(self.trans)
         self.retranslateUi(self)
         self.handle_editing_finished()
@@ -168,7 +180,7 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             output_dir.mkdir(exist_ok=True)
             counter = 1
             for result in rsp.output.results:
-                print(f"\rProcess[{counter}/{len(rsp.output.results)}]",end="")
+                print(f"\rProcess[{counter}/{len(rsp.output.results)}]", end="")
                 file_name = Path(PurePosixPath(unquote(urlparse(result.url).path)).parts[-1]).stem
                 file_name += self.output_format_comboBox.currentText()
                 with Image.open(BytesIO(requests.get(result.url).content)) as img:

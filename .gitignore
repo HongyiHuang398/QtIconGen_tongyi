@@ -4,3 +4,5 @@
 /config.ini
 /outputs/
 /.idea/
+/main.dist/
+/main.build/
