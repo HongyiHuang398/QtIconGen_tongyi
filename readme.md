@@ -8,9 +8,14 @@ The api keys can be gotten from
 
 ## How to compile the project?
 
+Install virtual environment for this project
+
+~~~shell
+pip install -r requirements.txt
+~~~
 Personally, I use nuitka to package the project.
 
-Install nuitka first(If you do not have).
+Install nuitka (If you do not have).
 
 **Please do not install it to the virtual environment!**
 
