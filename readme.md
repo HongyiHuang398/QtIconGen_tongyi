@@ -8,25 +8,19 @@ The api keys can be gotten from
 
 ## How to compile the project?
 
-Install virtual environment for this project
+Install python modules first
 
 ~~~shell
 pip install -r requirements.txt
 ~~~
+
 Personally, I use nuitka to package the project.
 
-Install nuitka (If you do not have).
 
-**Please do not install it to the virtual environment!**
-
-~~~shell
-pip install nuitka
-~~~
-
-Then run this command in your shell
+Run this command in your shell
 
 ~~~shell
-nuitka --windows-console-mode=disable --standalone --enable-plugin=pyqt5 --remove-output --follow-imports  --output-dir=build/ --include-data-files=./zh_CN.qm=./zh_CN.qm .\main.py
+nuitka --lto=yes --windows-console-mode=disable --standalone --enable-plugin=pyqt5 --remove-output --follow-imports --output-dir=build/ --include-data-files=./zh_CN.qm=./zh_CN.qm .\main.py
 ~~~
 
 **Done!**
