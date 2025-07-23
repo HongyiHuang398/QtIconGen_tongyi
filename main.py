@@ -1,23 +1,22 @@
+import os
 import subprocess
 import sys
 from configparser import ConfigParser
+from io import BytesIO
+from pathlib import Path
 from threading import Thread
+
+from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTranslator
 
 import MainWindow
-from pathlib import Path
-from PIL import Image
-from io import BytesIO
-
-# Get path of the resource
-import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
 sys.path.append(os.path.join(BASE_DIR, 'client'))
 
-
+# Get path of the resource
 def resourcePath(relative_path):
     base_path = os.path.abspath(".")
     r = os.path.join(base_path, relative_path)
