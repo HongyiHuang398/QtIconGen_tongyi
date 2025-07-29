@@ -200,7 +200,7 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
                                   model="wanx2.1-imageedit",
                                   function="description_edit",
                                   prompt=prompt,
-                                  base_image_url=self.image_path.toString(),
+                                  base_image_url=self.image_path.toLocalFile(),
                                   n=int(self.icon_amount_lineEdit.text()))
         self.process_rsp(rsp)
 
@@ -215,7 +215,8 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
             self.statusbar.showMessage(self.tr("Request Successfully, downloading...")
                                        , 5000)
         for item in rsp["output"]["results"]:
-            logging.info(f"Actual Prompt: {item["actual_prompt"]}")
+            if "actual_prompt" in item:
+                logging.info(f"Actual Prompt: {item["actual_prompt"]}")
         if rsp.status_code == HTTPStatus.OK:
             output_dir = Path("outputs")
             output_dir.mkdir(exist_ok=True)
