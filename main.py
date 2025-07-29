@@ -44,6 +44,22 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
         self.mode_text_to_image_radioButton.clicked.connect(lambda : (self.upload_image_pushButton.setEnabled(False),
                                                                       self.image_preview.setPixmap(QPixmap())))
         self.mode_image_edit_radioButton.clicked.connect(lambda: self.upload_image_pushButton.setEnabled(True))
+    def save_theme(self):
+        config = ConfigParser()
+        config.read("config.ini", encoding='UTF-8')
+        config["client"]["theme"] = QApplication.instance().style().name()
+        fo = open("config.ini", 'w', encoding='UTF-8')
+        config.write(fo)
+        fo.close()
+        logging.info("Saved theme successfully")
+
+    def auto_add_themes(self):
+        keys = QStyleFactory.keys()
+        for theme in keys:
+            action = QAction(theme,self)
+            self.menu.addAction(action)
+            action.triggered.connect(lambda checked, t=theme : (QApplication.instance().setStyle(QStyleFactory.create(t)),self.save_theme()))
+
 
     def upload_image(self):
         url, _ = QFileDialog.getOpenFileUrl(self,
@@ -113,6 +129,8 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
         else:
             self.select_zh_cn()
             self.zh_CN_radio_Button.setChecked(True)
+        if 'theme' in config['client']:
+            QApplication.instance().setStyle(config['client']['theme'])
 
     def init_config(self):
         config = ConfigParser()
@@ -244,5 +262,6 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, handlers=[handler])
     app = QApplication(sys.argv)
     window = MyWindow()
+    window.auto_add_themes()
     window.show()
     sys.exit(app.exec())
