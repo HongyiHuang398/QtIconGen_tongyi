@@ -20,7 +20,7 @@ Personally, I use nuitka to package the project.
 Run this command in your shell
 
 ~~~shell
-nuitka --lto=yes --windows-console-mode=disable --standalone --enable-plugin=pyqt5 --remove-output --follow-imports --output-dir=build/ --include-data-files=./zh_CN.qm=./zh_CN.qm .\main.py
+nuitka --lto=yes --windows-console-mode=disable --standalone --enable-plugin=pyside6 --remove-output --follow-imports --output-dir=build/ --include-data-files=./zh_CN.qm=./zh_CN.qm .\main.py
 ~~~
 
 **Done!**

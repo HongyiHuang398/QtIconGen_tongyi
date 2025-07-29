@@ -94,22 +94,22 @@
         <translation>尺寸</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="304"/>
+        <location filename="Ui_MainWindow.ui" line="307"/>
         <source>Visual style</source>
         <translation>视觉风格</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="389"/>
+        <location filename="Ui_MainWindow.ui" line="392"/>
         <source>Hue</source>
         <translation>色彩</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="440"/>
+        <location filename="Ui_MainWindow.ui" line="443"/>
         <source>Texture</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="525"/>
+        <location filename="Ui_MainWindow.ui" line="528"/>
         <source>Shape</source>
         <translation>边缘形状</translation>
     </message>
@@ -159,148 +159,153 @@
         <translation>图像编辑</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="262"/>
+        <location filename="Ui_MainWindow.ui" line="265"/>
         <source>Upload image</source>
         <translation>上传图像</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="310"/>
+        <location filename="Ui_MainWindow.ui" line="313"/>
         <source>Low Poly</source>
         <translation>低多边形</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="317"/>
+        <location filename="Ui_MainWindow.ui" line="320"/>
         <source>Pixel</source>
         <translation>像素</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="324"/>
+        <location filename="Ui_MainWindow.ui" line="327"/>
         <source>Flat</source>
         <translation>扁平化</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="331"/>
+        <location filename="Ui_MainWindow.ui" line="334"/>
         <source>Blender</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="338"/>
+        <location filename="Ui_MainWindow.ui" line="341"/>
         <source>3D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="345"/>
+        <location filename="Ui_MainWindow.ui" line="348"/>
         <source>Abstract</source>
         <translation>抽象</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="352"/>
+        <location filename="Ui_MainWindow.ui" line="355"/>
         <source>Modern</source>
         <translation>现代</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="359"/>
+        <location filename="Ui_MainWindow.ui" line="362"/>
         <source>Neon</source>
         <translation>霓虹</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="366"/>
+        <location filename="Ui_MainWindow.ui" line="369"/>
         <source>2.5D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="395"/>
+        <location filename="Ui_MainWindow.ui" line="398"/>
         <source>Gradient</source>
         <translation>渐变</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="402"/>
+        <location filename="Ui_MainWindow.ui" line="405"/>
         <source>Transparent</source>
         <translation>透明</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="409"/>
+        <location filename="Ui_MainWindow.ui" line="412"/>
         <source>Morandi</source>
         <translation>莫兰迪</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="416"/>
-        <location filename="Ui_MainWindow.ui" line="502"/>
+        <location filename="Ui_MainWindow.ui" line="419"/>
+        <location filename="Ui_MainWindow.ui" line="505"/>
         <source>Soft</source>
         <translation>柔软</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="423"/>
+        <location filename="Ui_MainWindow.ui" line="426"/>
         <source>Fluorescent</source>
         <translation>荧光色</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="430"/>
+        <location filename="Ui_MainWindow.ui" line="433"/>
         <source>Complementary</source>
         <translation>互补色</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="446"/>
+        <location filename="Ui_MainWindow.ui" line="449"/>
         <source>Frosted Glass</source>
         <translation>磨砂玻璃</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="453"/>
+        <location filename="Ui_MainWindow.ui" line="456"/>
         <source>Acrylic</source>
         <translation>亚克力</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="460"/>
+        <location filename="Ui_MainWindow.ui" line="463"/>
         <source>Liquid Metal</source>
         <translation>液态金属</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="467"/>
+        <location filename="Ui_MainWindow.ui" line="470"/>
         <source>Aluminum</source>
         <translation>铝制</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="474"/>
+        <location filename="Ui_MainWindow.ui" line="477"/>
         <source>Clay</source>
         <translation>粘土</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="481"/>
+        <location filename="Ui_MainWindow.ui" line="484"/>
         <source>Metal</source>
         <translation>金属</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="488"/>
+        <location filename="Ui_MainWindow.ui" line="491"/>
         <source>Glass</source>
         <translation>玻璃</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="495"/>
+        <location filename="Ui_MainWindow.ui" line="498"/>
         <source>Paper Art</source>
         <translation>衍纸艺术</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="509"/>
+        <location filename="Ui_MainWindow.ui" line="512"/>
         <source>Stained Glass</source>
         <translation>彩色玻璃</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="531"/>
+        <location filename="Ui_MainWindow.ui" line="534"/>
         <source>Circle</source>
         <translation>圆形</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="541"/>
+        <location filename="Ui_MainWindow.ui" line="544"/>
         <source>Square</source>
         <translation>方形</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="548"/>
+        <location filename="Ui_MainWindow.ui" line="551"/>
         <source>Rounded</source>
         <translation>圆角</translation>
     </message>
     <message>
-        <location filename="Ui_MainWindow.ui" line="373"/>
+        <location filename="Ui_MainWindow.ui" line="600"/>
+        <source>Theme</source>
+        <translation>主题</translation>
+    </message>
+    <message>
+        <location filename="Ui_MainWindow.ui" line="376"/>
         <source>Cute</source>
         <translation>可爱</translation>
     </message>
@@ -308,32 +313,32 @@
 <context>
     <name>MyWindow</name>
     <message>
-        <location filename="main.py" line="166"/>
+        <location filename="main.py" line="188"/>
         <source>Request sent, please wait...</source>
         <translation>已发送请求, 请耐心等待...</translation>
     </message>
     <message>
-        <location filename="main.py" line="182"/>
+        <location filename="main.py" line="204"/>
         <source>Request failed, image not found</source>
         <translation>请求失败，未导入图像</translation>
     </message>
     <message>
-        <location filename="main.py" line="183"/>
+        <location filename="main.py" line="205"/>
         <source>Image not found</source>
         <translation>未导入图像</translation>
     </message>
     <message>
-        <location filename="main.py" line="184"/>
+        <location filename="main.py" line="206"/>
         <source>Cannot find the image, please make sure the path is correct.</source>
         <translation>找不到图像, 请确认路径正确。</translation>
     </message>
     <message>
-        <location filename="main.py" line="212"/>
+        <location filename="main.py" line="234"/>
         <source>Request Successfully, downloading...</source>
         <translation>请求成功, 正在开始下载...</translation>
     </message>
     <message>
-        <location filename="main.py" line="221"/>
+        <location filename="main.py" line="244"/>
         <source>Downloaded</source>
         <translation>已下载</translation>
     </message>
