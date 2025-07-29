@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 import sys
@@ -7,28 +8,26 @@ from pathlib import Path
 from threading import Thread
 
 from PIL import Image
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QTranslator
+from PySide6.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
+from dashscope import ImageSynthesis
 
-import MainWindow
+
+import Ui_MainWindow
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
 sys.path.append(os.path.join(BASE_DIR, 'client'))
 
-# Get path of the resource
-def resourcePath(relative_path):
-    base_path = os.path.abspath(".")
-    r = os.path.join(base_path, relative_path)
-    return r
 
-
-class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
+class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.setup_component_properties()
 
+        self.image_path = QUrl()
         self.trans = None
         self.init_config()
         self.load_config()
@@ -37,9 +36,21 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.generate_image_pushButton.clicked.connect(self.send_request)
         self.icon_color_select_pushButton.clicked.connect(self.open_color_selector)
         self.imagePreviewList.itemDoubleClicked.connect(self.open_image_selected)
+        self.upload_image_pushButton.clicked.connect(self.upload_image)
 
         self.en_US_radio_Button.clicked.connect(self.select_en_us)
         self.zh_CN_radio_Button.clicked.connect(self.select_zh_cn)
+
+        self.mode_text_to_image_radioButton.clicked.connect(lambda : (self.upload_image_pushButton.setEnabled(False),
+                                                                      self.image_preview.setPixmap(QPixmap())))
+        self.mode_image_edit_radioButton.clicked.connect(lambda: self.upload_image_pushButton.setEnabled(True))
+
+    def upload_image(self):
+        url, _ = QFileDialog.getOpenFileUrl(self,
+                                            filter="Image files (*.jpg *.png);;")
+        pixmap = QPixmap(QImage(url.toLocalFile())).scaled(QSize(32, 32), Qt.AspectRatioMode.KeepAspectRatioByExpanding)
+        self.image_preview.setPixmap(pixmap)
+        self.image_path = url
 
     def setup_component_properties(self):
         containers = [
@@ -50,7 +61,7 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         ]
 
         for container, prefix in containers:
-            children = container.findChildren((QtWidgets.QCheckBox, QtWidgets.QRadioButton))
+            children = container.findChildren(QCheckBox) + container.findChildren(QRadioButton)
 
             for child in children:
                 prompt_key = child.text()
@@ -59,28 +70,28 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
     def select_en_us(self):
         if self.trans:
-            QtWidgets.QApplication.removeTranslator(self.trans)
+            app.removeTranslator(self.trans)
             self.trans = None
         self.retranslateUi(self)
         self.handle_editing_finished()
 
     def select_zh_cn(self):
         if self.trans:
-            QtWidgets.QApplication.removeTranslator(self.trans)
+            app.removeTranslator(self.trans)
             self.trans = None
         self.trans = QTranslator()
-        if self.trans.load(resourcePath("./zh_CN.qm")):
-            QtWidgets.QApplication.installTranslator(self.trans)
+        if self.trans.load("./zh_CN.qm"):
+            app.installTranslator(self.trans)
         self.retranslateUi(self)
         self.handle_editing_finished()
 
     def open_image_selected(self):
         subprocess.run(['start',
-                        self.imagePreviewList.selectedItems()[0].data(QtCore.Qt.ItemDataRole.UserRole)],
+                        self.imagePreviewList.selectedItems()[0].data(Qt.ItemDataRole.UserRole)],
                        shell=True)
 
     def open_color_selector(self):
-        color = QtWidgets.QColorDialog().getColor()
+        color = QColorDialog().getColor()
         self.icon_color_select.setText(color.name())
 
     def handle_editing_finished(self):
@@ -91,7 +102,7 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         fo = open("config.ini", 'w', encoding='UTF-8')
         config.write(fo)
         fo.close()
-        print("保存成功")
+        logging.info("Saved successfully")
 
     def load_config(self):
         config = ConfigParser()
@@ -139,9 +150,9 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
         for container in containers:
             selected = []
-            for child in container.findChildren((QtWidgets.QCheckBox, QtWidgets.QRadioButton)):
-                if (isinstance(child, QtWidgets.QCheckBox) and child.isChecked()) or \
-                        (isinstance(child, QtWidgets.QRadioButton) and child.isChecked()):
+            for child in (container.findChildren(QCheckBox) + container.findChildren(QRadioButton)):
+                if (isinstance(child, QCheckBox) and child.isChecked()) or \
+                        (isinstance(child, QRadioButton) and child.isChecked()):
                     prompt_key = child.property("prompt_key")
                     if prompt_key:
                         selected.append(prompt_key)
@@ -154,49 +165,83 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             prompt_parts.append(extra)
 
         prompt = ', '.join(prompt_parts)
-        print("Original Prompt:", prompt)
-        print('----Send request, please wait...----')
+        logging.info(f"Original Prompt: {prompt}")
+        logging.info('----Send request, please wait...----')
+        self.statusbar.showMessage(self.tr("Request sent, please wait..."), 5000)
+
         try:
-            thread = Thread(target=self.request_image, args=(prompt,))
-            thread.start()
-        except:
-            print("Error, please enter the correct api key!")
+            self.request_image(prompt)
+        except Exception as e:
+            logging.error(e)
 
     def request_image(self, prompt):
-        from http import HTTPStatus
-        from urllib.parse import urlparse, unquote
-        from pathlib import PurePosixPath
-        import requests
-        from dashscope import ImageSynthesis
+        if self.mode_text_to_image_radioButton.isChecked():
+            thread = Thread(target=self.request_text_to_image,args=(prompt,))
+            thread.start()
+        else:
+            if QUrl.isValid(self.image_path):
+                thread = Thread(target=self.request_image_edit, args=(prompt,))
+                thread.start()
+            else:
+                self.statusbar.showMessage(self.tr("Request failed, image not found"), 5000)
+                QMessageBox.warning(self, self.tr("Image not found"),
+                                    self.tr("Cannot find the image, please make sure the path is correct."))
+
+    def request_text_to_image(self, prompt):
         rsp = ImageSynthesis.call(api_key=self.api_key_lineEdit.text(),
                                   model=self.model_select_comboBox.currentText(),
                                   prompt=prompt,
                                   n=int(self.icon_amount_lineEdit.text()),
                                   size=self.icon_size_comboBox.currentText())
+        self.process_rsp(rsp)
+
+    def request_image_edit(self, prompt):
+        rsp = ImageSynthesis.call(api_key=self.api_key_lineEdit.text(),
+                                  model="wanx2.1-imageedit",
+                                  function="description_edit",
+                                  prompt=prompt,
+                                  base_image_url=self.image_path.toString(),
+                                  n=int(self.icon_amount_lineEdit.text()))
+        self.process_rsp(rsp)
+
+    def process_rsp(self, rsp):
+        from http import HTTPStatus
+        from urllib.parse import urlparse, unquote
+        from pathlib import PurePosixPath
+        import requests
         print('response: %s' % rsp)
+        logging.info(f"Status: {rsp["output"]["task_status"]}")
+        if rsp["output"]["task_status"] == "SUCCEEDED":
+            self.statusbar.showMessage(self.tr("Request Successfully, downloading...")
+                                       , 5000)
+        for item in rsp["output"]["results"]:
+            logging.info(f"Actual Prompt: {item["actual_prompt"]}")
         if rsp.status_code == HTTPStatus.OK:
             output_dir = Path("outputs")
             output_dir.mkdir(exist_ok=True)
             counter = 1
             for result in rsp.output.results:
-                print(f"\rProcess[{counter}/{len(rsp.output.results)}]", end="")
+                logging.info(f"Process[{counter}/{len(rsp.output.results)}]")
+                self.statusbar.showMessage(self.tr("Downloaded") + f" {counter}/{len(rsp.output.results)}",
+                                           5000)
                 file_name = Path(PurePosixPath(unquote(urlparse(result.url).path)).parts[-1]).stem
                 file_name += self.output_format_comboBox.currentText()
                 with Image.open(BytesIO(requests.get(result.url).content)) as img:
                     img = img.convert("RGB")
                     img.save(output_dir / file_name, quality=100)
-                item = QtWidgets.QListWidgetItem()
-                item.setData(QtCore.Qt.ItemDataRole.UserRole, str(output_dir / file_name))
-                item.setIcon(QtGui.QIcon(str(output_dir / file_name)))
+                item = QListWidgetItem()
+                item.setData(Qt.ItemDataRole.UserRole, str(output_dir / file_name))
+                item.setIcon(QIcon(str(output_dir / file_name)))
                 self.imagePreviewList.addItem(item)
                 counter += 1
         else:
-            print('sync_call Failed, status_code: %s, code: %s, message: %s' %
-                  (rsp.status_code, rsp.code, rsp.message))
+            logging.error(f'sync_call Failed, status_code: {rsp.status_code}, code: {rsp.code}, message: {rsp.message}')
 
 
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
+    handler = logging.StreamHandler(stream=sys.stdout)
+    logging.basicConfig(level=logging.INFO, handlers=[handler])
+    app = QApplication(sys.argv)
     window = MyWindow()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
