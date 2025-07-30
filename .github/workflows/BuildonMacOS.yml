@@ -14,7 +14,7 @@ jobs:
           pip install -r requirements.txt
       - name: Build App
         run: |
-          nuitka --lto=yes --windows-console-mode=disable --standalone --enable-plugin=pyside6 --remove-output --follow-imports --output-dir=build/ --include-data-files=./zh_CN.qm=./zh_CN.qm .\main.py
+          nuitka --lto=yes --windows-console-mode=disable --standalone --enable-plugin=pyside6 --remove-output --follow-imports --output-dir=build/ --include-data-files=./zh_CN.qm=./zh_CN.qm ./main.py
       - name: Upload Artifact
         uses: actions/upload-artifact@v4.6.2
         with:
