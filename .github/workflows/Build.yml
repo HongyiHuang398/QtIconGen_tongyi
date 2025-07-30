@@ -23,7 +23,7 @@ jobs:
 
       - name: Build App
         run: |
-          nuitka --lto=yes --windows-console-mode=disable --standalone --enable-plugin=pyside6 --remove-output --follow-imports --output-dir=dist/ --include-data-files=./zh_CN.qm=./zh_CN.qm --macos-create-app-bundle --mode=app ./main.py
+          nuitka --lto=yes --windows-console-mode=disable --enable-plugin=pyside6 --remove-output --follow-imports --output-dir=dist/ --include-data-files=./zh_CN.qm=./zh_CN.qm --mode=app ./main.py
 
 
       - name: Upload Artifacts
