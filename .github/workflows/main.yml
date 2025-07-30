@@ -16,7 +16,7 @@ jobs:
         run: |
           nuitka --lto=yes --windows-console-mode=disable --standalone --enable-plugin=pyside6 --remove-output --follow-imports --output-dir=build/ --include-data-files=./zh_CN.qm=./zh_CN.qm .\main.py
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: myapp-mac
           path: dist/
