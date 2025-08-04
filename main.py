@@ -1,6 +1,7 @@
 import logging
 import subprocess
 import sys
+import time
 from io import BytesIO
 from pathlib import Path
 from threading import Thread
@@ -229,8 +230,9 @@ def init_config():
 
 
 if __name__ == "__main__":
-    handler = logging.StreamHandler(stream=sys.stdout)
-    logging.basicConfig(level=logging.INFO, handlers=[handler])
+    logDir = Path("logs")
+    logDir.mkdir(exist_ok=True)
+    logging.basicConfig(level=logging.INFO, filename=f"logs/{time.time()}.log", filemode='a', encoding="utf-8")
     configIni = QSettings("config.ini", QSettings.Format.IniFormat)
     init_config()
     app = QApplication(sys.argv)
