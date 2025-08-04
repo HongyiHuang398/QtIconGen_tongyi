@@ -15,6 +15,7 @@ from dashscope import ImageSynthesis
 
 
 import Ui_MainWindow
+from Utility import *
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
@@ -96,7 +97,7 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
             app.removeTranslator(self.trans)
             self.trans = None
         self.trans = QTranslator()
-        if self.trans.load("./zh_CN.qm"):
+        if self.trans.load(get_embed_data("resources/lang/zh_CN.qm")):
             app.installTranslator(self.trans)
         self.retranslateUi(self)
         self.handle_editing_finished()
