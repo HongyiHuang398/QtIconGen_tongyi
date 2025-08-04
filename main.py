@@ -1,8 +1,6 @@
 import logging
-import os
 import subprocess
 import sys
-from configparser import ConfigParser
 from io import BytesIO
 from pathlib import Path
 from threading import Thread
@@ -13,13 +11,8 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from dashscope import ImageSynthesis
 
-
 import Ui_MainWindow
 from Utility import *
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(BASE_DIR)
-sys.path.append(os.path.join(BASE_DIR, 'client'))
 
 
 class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
@@ -30,7 +23,6 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
 
         self.image_path = QUrl()
         self.trans = None
-        self.init_config()
         self.load_config()
 
         self.api_key_lineEdit.editingFinished.connect(self.handle_editing_finished)
@@ -42,25 +34,18 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
         self.en_US_radio_Button.clicked.connect(self.select_en_us)
         self.zh_CN_radio_Button.clicked.connect(self.select_zh_cn)
 
-        self.mode_text_to_image_radioButton.clicked.connect(lambda : (self.upload_image_pushButton.setEnabled(False),
-                                                                      self.image_preview.setPixmap(QPixmap())))
+        self.mode_text_to_image_radioButton.clicked.connect(lambda: (self.upload_image_pushButton.setEnabled(False),
+                                                                     self.image_preview.setPixmap(QPixmap())))
         self.mode_image_edit_radioButton.clicked.connect(lambda: self.upload_image_pushButton.setEnabled(True))
-    def save_theme(self):
-        config = ConfigParser()
-        config.read("config.ini", encoding='UTF-8')
-        config["client"]["theme"] = QApplication.instance().style().name()
-        fo = open("config.ini", 'w', encoding='UTF-8')
-        config.write(fo)
-        fo.close()
-        logging.info("Saved theme successfully")
 
     def auto_add_themes(self):
         keys = QStyleFactory.keys()
         for theme in keys:
-            action = QAction(theme,self)
+            action = QAction(theme, self)
             self.menu.addAction(action)
-            action.triggered.connect(lambda checked, t=theme : (QApplication.instance().setStyle(QStyleFactory.create(t)),self.save_theme()))
-
+            action.triggered.connect(
+                lambda checked, t=theme: (QApplication.instance().setStyle(QStyleFactory.create(t)),
+                                          self.handle_editing_finished()))
 
     def upload_image(self):
         url, _ = QFileDialog.getOpenFileUrl(self,
@@ -90,7 +75,6 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
             app.removeTranslator(self.trans)
             self.trans = None
         self.retranslateUi(self)
-        self.handle_editing_finished()
 
     def select_zh_cn(self):
         if self.trans:
@@ -100,7 +84,6 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
         if self.trans.load(get_embed_data("resources/lang/zh_CN.qm")):
             app.installTranslator(self.trans)
         self.retranslateUi(self)
-        self.handle_editing_finished()
 
     def open_image_selected(self):
         subprocess.run(['start',
@@ -112,46 +95,25 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
         self.icon_color_select.setText(color.name())
 
     def handle_editing_finished(self):
-        config = ConfigParser()
-        config.read("config.ini", encoding='UTF-8')
-        config['client']['api_key'] = self.api_key_lineEdit.text()
-        config['client']['language'] = 'en_US' if self.en_US_radio_Button.isChecked() else 'zh_CN'
-        fo = open("config.ini", 'w', encoding='UTF-8')
-        config.write(fo)
-        fo.close()
+        configIni.setValue("client/api_key", self.api_key_lineEdit.text())
+        lang = 'en_US' if self.en_US_radio_Button.isChecked() else 'zh_CN'
+        configIni.setValue("client/lang", lang)
+        configIni.setValue("client/theme", QApplication.instance().style().name())
+        configIni.sync()
         logging.info("Saved successfully")
 
     def load_config(self):
-        config = ConfigParser()
-        config.read('config.ini', encoding='UTF-8')
-        self.api_key_lineEdit.setText(config['client']['api_key'])
-        if config['client']['language'] == 'en_US':
+        self.api_key_lineEdit.setText(configIni.value("client/api_key"))
+        if configIni.value("client/lang") == 'en_US':
             self.select_en_us()
         else:
             self.select_zh_cn()
             self.zh_CN_radio_Button.setChecked(True)
-        if 'theme' in config['client']:
-            QApplication.instance().setStyle(config['client']['theme'])
-
-    def init_config(self):
-        config = ConfigParser()
-        config.read("config.ini", encoding='UTF-8')
-        if not config.has_section('client'):
-            config.add_section('client')
-        client = config['client']
-        if 'api_key' not in client:
-            client['api_key'] = ""
-        if 'language' not in client:
-            client['language'] = "en_US"
-        fo = open("config.ini", 'w', encoding='UTF-8')
-        config.write(fo)
-        fo.close()
+        QApplication.instance().setStyle(configIni.value("client/theme"))
 
     def send_request(self):
-        prompt_parts = []
-
-        prompt_parts.append(
-            f"flat ios app icon for {self.icon_name_lineEdit.text()} with {self.icon_color_select.text()} color")
+        prompt_parts = [
+            f"flat ios app icon for {self.icon_name_lineEdit.text()} with {self.icon_color_select.text()} color"]
 
         containers = [
             self.visual_style_groupBox,
@@ -195,7 +157,7 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
 
     def request_image(self, prompt):
         if self.mode_text_to_image_radioButton.isChecked():
-            thread = Thread(target=self.request_text_to_image,args=(prompt,))
+            thread = Thread(target=self.request_text_to_image, args=(prompt,))
             thread.start()
         else:
             if QUrl.isValid(self.image_path):
@@ -258,9 +220,19 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
             logging.error(f'sync_call Failed, status_code: {rsp.status_code}, code: {rsp.code}, message: {rsp.message}')
 
 
+def init_config():
+    if not configIni.contains("client/api_key"):
+        configIni.setValue("client/api_key", "")
+    if not configIni.contains("client/lang"):
+        configIni.setValue("client/lang", "en_US")
+    configIni.sync()
+
+
 if __name__ == "__main__":
     handler = logging.StreamHandler(stream=sys.stdout)
     logging.basicConfig(level=logging.INFO, handlers=[handler])
+    configIni = QSettings("config.ini", QSettings.Format.IniFormat)
+    init_config()
     app = QApplication(sys.argv)
     window = MyWindow()
     window.auto_add_themes()
