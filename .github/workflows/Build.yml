@@ -20,7 +20,7 @@ jobs:
 
       - name: Build App
         run: |
-          nuitka --lto=yes --windows-console-mode=disable --enable-plugin=pyside6 --remove-output --follow-imports --output-dir=build/ --include-data-dir=resources=resources --mode=app ./main.py
+          nuitka --lto=yes --windows-console-mode=disable --enable-plugin=pyside6 --remove-output --follow-imports --output-dir=build/ --include-data-dir=resources=resources --assume-yes-for-downloads --mode=app ./main.py
 
 
       - name: Upload Artifacts
