@@ -230,9 +230,10 @@ def init_config():
 
 
 if __name__ == "__main__":
-    logDir = Path("logs")
-    logDir.mkdir(exist_ok=True)
-    logging.basicConfig(level=logging.INFO, filename= logDir / f"{time.time()}.log", filemode='a', encoding="utf-8")
+    log_path = Path("logs")
+    log_path.mkdir(exist_ok=True)
+    handler = logging.FileHandler(filename=(log_path / f"{time.time()}.log"), mode='a', encoding='utf-8')
+    logging.basicConfig(level=logging.INFO, handlers=[handler])
     configIni = QSettings("config.ini", QSettings.Format.IniFormat)
     init_config()
     app = QApplication(sys.argv)
