@@ -1,5 +1,4 @@
 import logging
-import subprocess
 import sys
 import time
 from io import BytesIO
@@ -87,9 +86,10 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
         self.retranslateUi(self)
 
     def open_image_selected(self):
-        subprocess.run(['start',
-                        self.imagePreviewList.selectedItems()[0].data(Qt.ItemDataRole.UserRole)],
-                       shell=True)
+        selected_items = self.imagePreviewList.selectedItems()
+        if selected_items:
+            file_path = selected_items[0].data(Qt.ItemDataRole.UserRole)
+            QDesktopServices.openUrl(QUrl.fromLocalFile(file_path))
 
     def open_color_selector(self):
         color = QColorDialog().getColor()
@@ -232,7 +232,7 @@ def init_config():
 if __name__ == "__main__":
     logDir = Path("logs")
     logDir.mkdir(exist_ok=True)
-    logging.basicConfig(level=logging.INFO, filename=f"logs/{time.time()}.log", filemode='a', encoding="utf-8")
+    logging.basicConfig(level=logging.INFO, filename= logDir / f"{time.time()}.log", filemode='a', encoding="utf-8")
     configIni = QSettings("config.ini", QSettings.Format.IniFormat)
     init_config()
     app = QApplication(sys.argv)
