@@ -28,6 +28,8 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(800, 600)
+        self.actionOpen_Data_Folder = QAction(MainWindow)
+        self.actionOpen_Data_Folder.setObjectName(u"actionOpen_Data_Folder")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_4 = QVBoxLayout(self.centralwidget)
@@ -180,6 +182,12 @@ class Ui_MainWindow(object):
 
         self.formLayout.setWidget(2, QFormLayout.ItemRole.FieldRole, self.output_format_comboBox)
 
+        self.upload_image_pushButton = QPushButton(self.centralwidget)
+        self.upload_image_pushButton.setObjectName(u"upload_image_pushButton")
+        self.upload_image_pushButton.setEnabled(False)
+
+        self.formLayout.setWidget(3, QFormLayout.ItemRole.LabelRole, self.upload_image_pushButton)
+
         self.generate_image_pushButton = QPushButton(self.centralwidget)
         self.generate_image_pushButton.setObjectName(u"generate_image_pushButton")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
@@ -191,12 +199,6 @@ class Ui_MainWindow(object):
         self.generate_image_pushButton.setContextMenuPolicy(Qt.ContextMenuPolicy.DefaultContextMenu)
 
         self.formLayout.setWidget(3, QFormLayout.ItemRole.FieldRole, self.generate_image_pushButton)
-
-        self.upload_image_pushButton = QPushButton(self.centralwidget)
-        self.upload_image_pushButton.setObjectName(u"upload_image_pushButton")
-        self.upload_image_pushButton.setEnabled(False)
-
-        self.formLayout.setWidget(3, QFormLayout.ItemRole.LabelRole, self.upload_image_pushButton)
 
         self.image_preview = QLabel(self.centralwidget)
         self.image_preview.setObjectName(u"image_preview")
@@ -420,12 +422,16 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QRect(0, 0, 800, 33))
         self.menu = QMenu(self.menubar)
         self.menu.setObjectName(u"menu")
+        self.menuFiles = QMenu(self.menubar)
+        self.menuFiles.setObjectName(u"menuFiles")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menu.menuAction())
+        self.menubar.addAction(self.menuFiles.menuAction())
+        self.menuFiles.addAction(self.actionOpen_Data_Folder)
 
         self.retranslateUi(MainWindow)
 
@@ -434,6 +440,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"AI Icon Generator", None))
+        self.actionOpen_Data_Folder.setText(QCoreApplication.translate("MainWindow", u"Open Data Folder", None))
         self.icon_name.setText(QCoreApplication.translate("MainWindow", u"Subject", None))
         self.icon_color_select.setText(QCoreApplication.translate("MainWindow", u"#1e90ff", None))
         self.icon_color_select_pushButton.setText(QCoreApplication.translate("MainWindow", u"Open color selector", None))
@@ -464,8 +471,8 @@ class Ui_MainWindow(object):
         self.output_format_comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u".png", None))
         self.output_format_comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u".jpg", None))
 
-        self.generate_image_pushButton.setText(QCoreApplication.translate("MainWindow", u"Generate images", None))
         self.upload_image_pushButton.setText(QCoreApplication.translate("MainWindow", u"Upload image", None))
+        self.generate_image_pushButton.setText(QCoreApplication.translate("MainWindow", u"Generate images", None))
         self.image_preview.setText("")
         self.visual_style_groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Visual style", None))
         self.checkBox_24.setText(QCoreApplication.translate("MainWindow", u"Low Poly", None))
@@ -501,5 +508,6 @@ class Ui_MainWindow(object):
         self.radioButton.setText(QCoreApplication.translate("MainWindow", u"Square", None))
         self.radioButton_3.setText(QCoreApplication.translate("MainWindow", u"Rounded", None))
         self.menu.setTitle(QCoreApplication.translate("MainWindow", u"Theme", None))
+        self.menuFiles.setTitle(QCoreApplication.translate("MainWindow", u"Files", None))
     # retranslateUi
 

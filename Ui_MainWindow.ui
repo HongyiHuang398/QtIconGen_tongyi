@@ -234,6 +234,16 @@
           </item>
          </widget>
         </item>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="upload_image_pushButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Upload image</string>
+          </property>
+         </widget>
+        </item>
         <item row="3" column="1">
          <widget class="QPushButton" name="generate_image_pushButton">
           <property name="sizePolicy">
@@ -253,16 +263,6 @@
           </property>
           <property name="text">
            <string>Generate images</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QPushButton" name="upload_image_pushButton">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Upload image</string>
           </property>
          </widget>
         </item>
@@ -600,9 +600,21 @@
      <string>Theme</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuFiles">
+    <property name="title">
+     <string>Files</string>
+    </property>
+    <addaction name="actionOpen_Data_Folder"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menuFiles"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen_Data_Folder">
+   <property name="text">
+    <string>Open Data Folder</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

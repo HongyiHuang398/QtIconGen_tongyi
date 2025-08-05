@@ -38,6 +38,8 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
                                                                      self.image_preview.setPixmap(QPixmap())))
         self.mode_image_edit_radioButton.clicked.connect(lambda: self.upload_image_pushButton.setEnabled(True))
 
+        self.actionOpen_Data_Folder.triggered.connect(lambda: QDesktopServices.openUrl(QUrl.fromLocalFile(app_dir)))
+
     def auto_add_themes(self):
         keys = QStyleFactory.keys()
         for theme in keys:
@@ -200,7 +202,7 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
             if "actual_prompt" in item:
                 logging.info(f"Actual Prompt: {item["actual_prompt"]}")
         if rsp.status_code == HTTPStatus.OK:
-            output_dir = Path("outputs")
+            output_dir = app_dir / "outputs"
             output_dir.mkdir(exist_ok=True)
             counter = 1
             for result in rsp.output.results:
@@ -230,12 +232,14 @@ def init_config():
 
 
 if __name__ == "__main__":
-    log_folder = Path("logs")
+    app_dir = Path.home() / "QtIconGen"
+    app_dir.mkdir(exist_ok=True)
+    log_folder = app_dir / "logs"
     log_folder.mkdir(exist_ok=True)
     console_handler = logging.StreamHandler(stream=sys.stdout)
     file_handler = logging.FileHandler(log_folder / f"{time.time()}.log")
     logging.basicConfig(level=logging.INFO,handlers=[console_handler,file_handler],encoding="utf-8")
-    configIni = QSettings("config.ini", QSettings.Format.IniFormat)
+    configIni = QSettings(str(app_dir / "config.ini"), QSettings.Format.IniFormat)
     init_config()
     app = QApplication(sys.argv)
     window = MyWindow()
