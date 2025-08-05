@@ -26,10 +26,6 @@ nuitka --lto=yes --windows-console-mode=disable --enable-plugin=pyside6 --remove
 
 **Done!**
 
-## Caution about macOS
-If you want to use it on macOS, please pay attention to the strict access control.
-The problems on macOS are basically because of this.
-
 # Image Preview (Version 1.0)
 English
 ![The image of the program](assets/img_3.png)
