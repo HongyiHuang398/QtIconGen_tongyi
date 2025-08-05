@@ -323,28 +323,34 @@
 <context>
     <name>MyWindow</name>
     <message>
+        <location filename="../../main.py" line="154"/>
         <source>Request sent, please wait...</source>
-        <translation type="vanished">已发送请求, 请耐心等待...</translation>
+        <translation>已发送请求, 请耐心等待...</translation>
     </message>
     <message>
+        <location filename="../../main.py" line="170"/>
         <source>Request failed, image not found</source>
-        <translation type="vanished">请求失败，未导入图像</translation>
+        <translation>请求失败，未导入图像</translation>
     </message>
     <message>
+        <location filename="../../main.py" line="171"/>
         <source>Image not found</source>
-        <translation type="vanished">未导入图像</translation>
+        <translation>未导入图像</translation>
     </message>
     <message>
+        <location filename="../../main.py" line="172"/>
         <source>Cannot find the image, please make sure the path is correct.</source>
-        <translation type="vanished">找不到图像, 请确认路径正确。</translation>
+        <translation>找不到图像, 请确认路径正确。</translation>
     </message>
     <message>
+        <location filename="../../main.py" line="200"/>
         <source>Request Successfully, downloading...</source>
-        <translation type="vanished">请求成功, 正在开始下载...</translation>
+        <translation>请求成功, 正在开始下载...</translation>
     </message>
     <message>
+        <location filename="../../main.py" line="210"/>
         <source>Downloaded</source>
-        <translation type="vanished">已下载</translation>
+        <translation>已下载</translation>
     </message>
 </context>
 </TS>
