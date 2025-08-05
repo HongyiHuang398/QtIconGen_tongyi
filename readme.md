@@ -28,7 +28,7 @@ nuitka --lto=yes --windows-console-mode=disable --enable-plugin=pyside6 --remove
 
 ## Caution about macOS
 If you want to use it on macOS, please pay attention to the strict access control.
-You cannot use the .app file directly, please put it in a folder
+The problems on macOS are basically because of this.
 
 # Image Preview (Version 1.0)
 English
