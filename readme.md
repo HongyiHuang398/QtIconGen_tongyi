@@ -1,4 +1,4 @@
-# AI Icon Generator based on PyQt
+# AI Icon Generator based on Pyside6
 
 It's an AI icon generator which uses api keys from aliyun based on Qt(Pyside6) and the SDK from Aliyun.
 You can use the newest text-to-image models by using this program easily
