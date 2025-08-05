@@ -186,6 +186,7 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
                                   prompt=prompt,
                                   base_image_url=self.image_path.toLocalFile(),
                                   n=int(self.icon_amount_lineEdit.text()))
+        logging.info("Now processing...")
         self.process_rsp(rsp)
 
     def process_rsp(self, rsp):
@@ -193,7 +194,7 @@ class MyWindow(QMainWindow, Ui_MainWindow.Ui_MainWindow):
         from urllib.parse import urlparse, unquote
         from pathlib import PurePosixPath
         import requests
-        print('response: %s' % rsp)
+        logging.info('response: %s' % rsp)
         logging.info(f"Status: {rsp["output"]["task_status"]}")
         if rsp["output"]["task_status"] == "SUCCEEDED":
             self.statusbar.showMessage(self.tr("Request Successfully, downloading...")
